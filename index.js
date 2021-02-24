@@ -4,6 +4,8 @@ const mongoose = require("mongoose");
 const app = express();
 
 const Article = require("./models/article");
+const article = require("./models/article");
+const { title } = require("process");
 
 // COMMENTS FROM MIKE TO KEZIA
 
@@ -57,6 +59,43 @@ db.once("open", function () {
   });
 });
 
+   db.once("open", function(req, res) {
+    console.log("Connected to Mongodb");
+
+
+    //update article
+    const article = {};
+    article.title = req.body.title;
+    article.author = req.body.author;
+    article.body = req.body.body;
+
+    let query = {id:req.params.id}
+
+    Article.update(query, article, function(err) {
+      if(err){
+        console.log(err)
+
+      }
+    });
+
+  });
+
+  db.once("open",function(req, res) {
+    console.log("Connected to Mongodb");
+
+
+    const article = {_id:req.params.id};
+
+    Article.remove(query, unction (err) {
+      if(err){
+        console.log(err)
+      }
+    });
+
+  });
+
+
+
 //check for db errors
 db.on("error", function (err) {
   console.log(err);
@@ -83,6 +122,6 @@ app.use("/article/add", function () {
   });
 });
 
-app.listen(30001, function () {
+app.listen(3001, function () {
   console.log("Server started on port 3000");
 });
